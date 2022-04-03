@@ -13,22 +13,27 @@ function estimator = Summaries_of_Beta_distribution(alpha,beta,type,varargin)
 %       [lower upper].
 %
 % 12/10/16: Initial version
-% 31/03/22: update to MAP explicit calculation
+% 31/03/22: testing MAP explicit calculation; and tidying up.
 % Mark Humphries 
 
 switch type
     case 'MAP'
-        if alpha > 1 && beta > 1
-            estimator = (alpha - 1) ./ (alpha + beta + 2);  % maximum a posteriori estimate
-        elseif alpha <= 1 && beta > 1
-            estimator = 0;
-        elseif alpha > 1 && beta <= 1
-            estimator = 1;
-        else 
-            % if alpha < 1 && beta < 1 distribution is bimodal, so no MAP
-            % alpha = beta = 1, distribution is uniform, so no MAP
-            estimator = NaN;  
-        end
+%         if alpha > 1 && beta > 1
+%             estimator = (alpha - 1) ./ (alpha + beta + 2);  % maximum a posteriori estimate
+%         elseif alpha <= 1 && beta > 1
+%             estimator = 0;
+%         elseif alpha > 1 && beta <= 1
+%             estimator = 1;
+%         else 
+%             % if alpha < 1 && beta < 1 distribution is bimodal, so no MAP
+%             % alpha = beta = 1, distribution is uniform, so no MAP
+%             estimator = NaN;  
+%         end
+
+        x = 0:0.001:1;
+        y = betapdf(x,alpha,beta);
+        [~,iy] = sort(y,'descend'); % sort values, then max will be first row of indices
+        estimator = x(iy(1));  % maximum a posterioi estimate
 
     case 'Mean'
         estimator = alpha ./ (alpha + beta);
