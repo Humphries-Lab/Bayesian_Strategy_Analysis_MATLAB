@@ -9,10 +9,11 @@ function trial_type = lose_shift_cued(trial_data)
 
 % default is that trial did not meet criteria for win-stay 
 trial_type = "null";
+number_trials = size(trial_data,1);
 
-% if chose cued option AND was NOT rewarded on the previous trial then
+% if more than 1 trial AND chose cued option AND was NOT rewarded on the previous trial then
 % candidate for lose-shift
-if trial_data.Choice(end-1) == trial_data.CuePosition(end-1) && ...
+if number_trials > 1 && trial_data.Choice(end-1) == trial_data.CuePosition(end-1) && ...
         trial_data.Reward(end-1) == "no"
     if trial_data.Choice(end) ~= trial_data.CuePosition(end)       
         % and did NOT choose the cued option this time

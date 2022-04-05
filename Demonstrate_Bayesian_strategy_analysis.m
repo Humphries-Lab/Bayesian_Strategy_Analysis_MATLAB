@@ -9,7 +9,7 @@ clearvars; close all;
 addpath Strategy_models/        % must add this path to access strategy models
 
 load Processed_data/PeyracheDataTables.mat   % a struct PeyracheData containing 4 Tables as fields, one per rat
-testData = PeyracheData.Rat_1;
+testData = PeyracheData.Rat_2;
 
 %% choose type of prior
 prior_type = "Uniform";

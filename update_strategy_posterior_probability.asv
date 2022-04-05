@@ -11,11 +11,8 @@ function [alpha,beta,success_total,failure_total] = update_strategy_posterior_pr
 % and failures, decayed. Set S_TOTAL = F_TOTAL = 0 for the first trial.
 % ALPHA_ZERO, BETA_ZERO: scalars, the priors for alpha and beta  
 %
-% If trial is NULL, then ALPHA=BETA=NaN by default
-% 
 % ... = UPDATE_STRATEGY_POSTERIOR_PROBABILITY(...,'DecayNull') will decay
-% the success and failure totals during null trials too, and return the
-% updated ALPHA and BETA.
+% the success and failure totals during null trials too
 %
 % Mark Humphries 2/4/2022
 
@@ -27,7 +24,7 @@ end
 
 switch trial_type
     case "success"
-        % update success total, and decay both prior sets of evidence
+        % update success total, and decay both prior sets of 
         success_total = decay_rate * success_total + 1;
         failure_total = decay_rate * failure_total;
     case "failure"

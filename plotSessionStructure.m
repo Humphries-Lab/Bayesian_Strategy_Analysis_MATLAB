@@ -38,9 +38,11 @@ for iC = 1:numel(changes)-1
     vert = [changes(iC) ymax; changes(iC+1) ymax; changes(iC+1) yabove; changes(iC) yabove];
     patch('Faces',face,'Vertices',vert,'FaceColor',rcolors(iC,:),'EdgeColor','none','Clipping','off');   
     
-
+    
     % label & line down
-    text(changes(iC)+5,ytext,strRules(iC),'Color',[1 1 1],'Fontsize',9);
+    % add "char" casting for old MATLAB versions where text() function
+    % can't handle strings
+    text(changes(iC)+5,ytext,char(strRules(iC)),'Color',[1 1 1],'Fontsize',9);
         % line([changes(iC) changes(iC)],[0 1],'Color',[0 0 0])
-    end
 end
+

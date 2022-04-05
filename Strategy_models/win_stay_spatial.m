@@ -9,8 +9,10 @@ function trial_type = win_stay_spatial(trial_data)
 % default is that trial did not meet criteria for win-stay 
 trial_type = "null";
 
-% if was rewarded on the previous trial then candidate for win-stay
-if trial_data.Reward(end-1) == "yes" 
+number_trials = size(trial_data,1);
+
+% if there are more than one trial, and was rewarded on the previous trial then candidate for win-stay
+if number_trials > 1 && trial_data.Reward(end-1) == "yes"
     
     if trial_data.Choice(end) == trial_data.Choice(end-1)
         % chose same spatial option, so is a success

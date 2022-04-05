@@ -9,9 +9,10 @@ function trial_type = win_stay_cued(trial_data)
 
 % default is that trial did not meet criteria for win-stay 
 trial_type = "null";
+number_trials = size(trial_data,1);
 
-% if chose cued option AND was rewarded on the previous trial then candidate for win-stay
-if trial_data.Choice(end-1) == trial_data.CuePosition(end-1) && ... 
+% if more than one trial, AND chose cued option AND was rewarded on the previous trial then candidate for win-stay
+if number_trials > 1 && trial_data.Choice(end-1) == trial_data.CuePosition(end-1) && ... 
         trial_data.Reward(end-1) == "yes"
     if trial_data.Choice(end) == trial_data.CuePosition(end)       
         % and chose cued option this time
