@@ -52,9 +52,22 @@ for index_trial = 1:number_of_trials
         trial_type = evaluate_strategy(strategies(index_strategy),testData(1:index_trial,:));
 
         % update its alpha, beta  
-        [Output.(charStrategy).alpha(index_trial),Output.(charStrategy).beta(index_trial),Output.(charStrategy).success_total,Output.(charStrategy).failure_total] = ...
-                update_strategy_posterior_probability(trial_type,decay_rate,Output.(charStrategy).success_total,Output.(charStrategy).failure_total,alpha0,beta0);
-
+        % [Output.(charStrategy).alpha(index_trial),Output.(charStrategy).beta(index_trial),Output.(charStrategy).success_total,Output.(charStrategy).failure_total] = ...
+ %               update_strategy_posterior_probability(trial_type,decay_rate,Output.(charStrategy).success_total,Output.(charStrategy).failure_total,alpha0,beta0);
+        
+         % update its alpha, beta, with decay of null trials  
+%         [Output.(charStrategy).alpha(index_trial),Output.(charStrategy).beta(index_trial),Output.(charStrategy).success_total,Output.(charStrategy).failure_total] = ...
+%                 update_strategy_posterior_probability(trial_type,decay_rate,Output.(charStrategy).success_total,Output.(charStrategy).failure_total,alpha0,beta0,'DecayNull');
+        
+        if index_trial == 1
+             [Output.(charStrategy).alpha(index_trial),Output.(charStrategy).beta(index_trial)] = ...
+                old_update_strategy_posterior_probability(trial_type,decay_rate,alpha0,beta0);
+       
+        else
+            [Output.(charStrategy).alpha(index_trial),Output.(charStrategy).beta(index_trial)] = ...
+                old_update_strategy_posterior_probability(trial_type,decay_rate,Output.(charStrategy).alpha(index_trial-1),Output.(charStrategy).beta(index_trial-1));
+        end
+            
         Output.(charStrategy).MAPprobability(index_trial) = Summaries_of_Beta_distribution(Output.(charStrategy).alpha(index_trial),Output.(charStrategy).beta(index_trial),'MAP');
         Output.(charStrategy).precision(index_trial) = Summaries_of_Beta_distribution(Output.(charStrategy).alpha(index_trial),Output.(charStrategy).beta(index_trial),'Precision');
     end  
@@ -85,9 +98,9 @@ xlabel('Trials'); ylabel('P(strategy)')
 % explore strategies...
 figure('Units', 'centimeters', 'PaperPositionMode', 'auto','Position',[10 15 20 9]);
 plotSessionStructure(gca,number_of_trials,new_session_trials,rule_change_trials,sequence_of_rules); hold on
-line([1,number_of_trials],[0.5 0.5],'Color',[0.7 0.7 0.7]) % chance
-plot(Output.go_left.MAPprobability);
-plot(Output.lose_shift_choice.MAPprobability,'Color',[0.8 0.6 0.5]);
-plot(Output.win_stay_choice.MAPprobability,'Color',[0.4 0.8 0.5]); 
+% line([1,number_of_trials],[0.5 0.5],'Color',[0.7 0.7 0.7]) % chance
+plot(Output.win_stay_cued.MAPprobability,'Color',[0.7 0.4 0.7]);
+plot(Output.lose_shift_spatial.MAPprobability,'Color',[0.8 0.6 0.5]);
+plot(Output.win_stay_spatial.MAPprobability,'Color',[0.4 0.8 0.5]); 
 xlabel('Trials'); ylabel('P(strategy)')
 
