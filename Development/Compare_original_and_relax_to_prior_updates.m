@@ -6,10 +6,11 @@
 
 clearvars; close all;
 
-addpath Strategy_models/        % must add this path to access strategy models
+addpath ../Strategy_models/        % must add this path to access strategy models
+addpath ../Functions/
 
-load Processed_data/PeyracheDataTables.mat   % a struct PeyracheData containing 4 Tables as fields, one per rat
-testData = PeyracheData.Rat_2;
+load ../Processed_data/PeyracheDataTables.mat   % a struct PeyracheData containing 4 Tables as fields, one per rat
+testData = PeyracheData.Rat_1;
 
 %% choose type of prior
 prior_type = "Uniform";
@@ -36,7 +37,8 @@ for index_trial = 1:number_of_trials
     % test strategy model
     trial_type = go_left(testData(1:index_trial,:));
     
-    % update probability of strategy
+    % update probability of strategy using original (alpha, beta) decay
+    % versions
     if index_trial == 1  % use prior on the first trial
         [alpha(index_trial),beta(index_trial)] = old_update_strategy_posterior_probability(trial_type,decay_rate,alpha0,beta0);
     else  % otherwise posterior on trial t-1 becomes prior on trial t
@@ -47,7 +49,7 @@ for index_trial = 1:number_of_trials
     old_MAPprobability(index_trial) = Summaries_of_Beta_distribution(alpha(index_trial),beta(index_trial),'MAP');
     old_precision(index_trial) = Summaries_of_Beta_distribution(alpha(index_trial),beta(index_trial),'Precision');
 
-    % update using correct relax-to-prior version    
+    % update using relax-to-prior version    
     [alpha(index_trial),beta(index_trial),success_total,failure_total] = ...
             update_strategy_posterior_probability(trial_type,decay_rate,success_total,failure_total,alpha0,beta0);
     

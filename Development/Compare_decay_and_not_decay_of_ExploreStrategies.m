@@ -1,4 +1,4 @@
-% replicate Figure 1 in paper using this toolbox
+% compare effects of decaying or not decaying (alpha,beta) on Null trials
 % Peyrache Rat1 at the moment
 % Mark Humphries
 
@@ -40,6 +40,13 @@ for index_strategy = 1:number_of_strategies
     Output.(charStrategy).precision = zeros(number_of_trials,1);
     Output.(charStrategy).success_total = 0;
     Output.(charStrategy).failure_total = 0;
+    OutputDecay.(charStrategy).alpha = zeros(number_of_trials,1);
+    OutputDecay.(charStrategy).beta = zeros(number_of_trials,1);
+    OutputDecay.(charStrategy).MAPprobability = zeros(number_of_trials,1);
+    OutputDecay.(charStrategy).precision = zeros(number_of_trials,1);
+    OutputDecay.(charStrategy).success_total = 0;
+    OutputDecay.(charStrategy).failure_total = 0;
+
 end
 
 % loop over trials and update each
@@ -49,20 +56,22 @@ for index_trial = 1:number_of_trials
 
         % test current strategy model
         trial_type = evaluate_strategy(strategies(index_strategy),testData(1:index_trial,:));
-        
-        % update Beta posterior
-        if index_trial == 1
-             [Output.(charStrategy).alpha(index_trial),Output.(charStrategy).beta(index_trial)] = ...
-                old_update_strategy_posterior_probability(trial_type,decay_rate,alpha0,beta0);
-       
-        else
-            [Output.(charStrategy).alpha(index_trial),Output.(charStrategy).beta(index_trial)] = ...
-                old_update_strategy_posterior_probability(trial_type,decay_rate,Output.(charStrategy).alpha(index_trial-1),Output.(charStrategy).beta(index_trial-1));
-        end
-            
-        % update MAP and precisions
+
+        % update its alpha, beta  
+        [Output.(charStrategy).alpha(index_trial),Output.(charStrategy).beta(index_trial),Output.(charStrategy).success_total,Output.(charStrategy).failure_total] = ...
+               update_strategy_posterior_probability(trial_type,decay_rate,Output.(charStrategy).success_total,Output.(charStrategy).failure_total,alpha0,beta0);
+        % compute MAP and precision
         Output.(charStrategy).MAPprobability(index_trial) = Summaries_of_Beta_distribution(Output.(charStrategy).alpha(index_trial),Output.(charStrategy).beta(index_trial),'MAP');
         Output.(charStrategy).precision(index_trial) = Summaries_of_Beta_distribution(Output.(charStrategy).alpha(index_trial),Output.(charStrategy).beta(index_trial),'Precision');
+
+           
+        % update its alpha, beta, with decay of null trials  
+        [OutputDecay.(charStrategy).alpha(index_trial),OutputDecay.(charStrategy).beta(index_trial),OutputDecay.(charStrategy).success_total,OutputDecay.(charStrategy).failure_total] = ...
+                update_strategy_posterior_probability(trial_type,decay_rate,OutputDecay.(charStrategy).success_total,OutputDecay.(charStrategy).failure_total,alpha0,beta0,'DecayNull');
+        
+            
+        OutputDecay.(charStrategy).MAPprobability(index_trial) = Summaries_of_Beta_distribution(OutputDecay.(charStrategy).alpha(index_trial),OutputDecay.(charStrategy).beta(index_trial),'MAP');
+        OutputDecay.(charStrategy).precision(index_trial) = Summaries_of_Beta_distribution(OutputDecay.(charStrategy).alpha(index_trial),OutputDecay.(charStrategy).beta(index_trial),'Precision');
     end  
 end
 
@@ -73,28 +82,32 @@ new_session_trials = find(testData.NewSessionTrials);
 rule_change_trials = find(testData.RuleChangeTrials);
 sequence_of_rules = [testData.TargetRule(1); testData.TargetRule(rule_change_trials)];
 
-% MAP rule strategies
+% rule strategies: should be identical 
 figure('Units', 'centimeters', 'PaperPositionMode', 'auto','Position',[10 15 20 9]);
 plotSessionStructure(gca,number_of_trials,new_session_trials,rule_change_trials,sequence_of_rules); hold on
 line([1,number_of_trials],[0.5 0.5],'Color',[0.7 0.7 0.7]) % chance
 plot(Output.go_left.MAPprobability);
-plot(Output.go_cued.MAPprobability,'Color',[0.8 0.6 0.5]);
-plot(Output.go_right.MAPprobability,'Color',[0.4 0.8 0.5]); 
+plot(OutputDecay.go_left.MAPprobability,'Color',[0.5 0.5 0.5]);
+
+% plot(Output.go_cued.MAPprobability,'Color',[0.8 0.6 0.5]);
+% plot(Output.go_right.MAPprobability,'Color',[0.4 0.8 0.5]); 
 xlabel('Trials'); ylabel('P(strategy)')
 
-% precision of rule strategies
-% rule strategies
-figure('Units', 'centimeters', 'PaperPositionMode', 'auto','Position',[10 15 20 9]);
-plot(Output.go_left.precision); hold on
-plot(Output.go_cued.precision,'Color',[0.8 0.4 0.7]);
-plotSessionStructure(gca,number_of_trials,new_session_trials,rule_change_trials,sequence_of_rules); hold on
-
-% MAP explore strategies...
+% explore strategies...
 figure('Units', 'centimeters', 'PaperPositionMode', 'auto','Position',[10 15 20 9]);
 plotSessionStructure(gca,number_of_trials,new_session_trials,rule_change_trials,sequence_of_rules); hold on
 % line([1,number_of_trials],[0.5 0.5],'Color',[0.7 0.7 0.7]) % chance
-plot(Output.lose_shift_cued.MAPprobability,'Color',[0.7 0.4 0.7]);
-plot(Output.lose_shift_spatial.MAPprobability,'Color',[0.8 0.6 0.5]);
-plot(Output.win_stay_spatial.MAPprobability,'Color',[0.4 0.8 0.5]); 
+plot(Output.win_stay_cued.MAPprobability,'Color',[0.7 0.4 0.7]);
+plot(OutputDecay.win_stay_cued.MAPprobability,'Color',[0.5 0.5 0.5]);
+title('Win-stay-cued');
 xlabel('Trials'); ylabel('P(strategy)')
+
+figure('Units', 'centimeters', 'PaperPositionMode', 'auto','Position',[10 15 20 9]);
+plotSessionStructure(gca,number_of_trials,new_session_trials,rule_change_trials,sequence_of_rules); hold on
+% line([1,number_of_trials],[0.5 0.5],'Color',[0.7 0.7 0.7]) % chance
+plot(Output.lose_shift_spatial.MAPprobability,'Color',[0.7 0.4 0.7]);
+plot(OutputDecay.lose_shift_spatial.MAPprobability,'Color',[0.5 0.5 0.5]);
+title('Lose-shift-spatial');
+xlabel('Trials'); ylabel('P(strategy)')
+
 

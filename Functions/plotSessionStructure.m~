@@ -1,25 +1,10 @@
 function plotSessionStructure(axes_handle,number_of_trials,new_session_trials,rule_change_trials,strRules,varargin)
 
-% PLOTSESSIONSTRUCTURE plots structure of task to axes in figure
-% PLOTSESSIONSTRUCTURE(AH,N_TRIALS,N_SESSIONS,RULE_CHANGE,RULES) will add
-% the rule and session structure of the task to the set of axes specified
-% by the handle AH, given:
-% N_TRIALS: total number of trials for this subject to be plotted
-% N_SESSIONS: the trial numbers for the start of each session
-% RULE_CHANGE: the trial numbers for the rule switches (in order)
-% RULES: a string array of the sequence of experienced rules 
-% 
-%
-% PLOTSESSIONSTRUCTURE(...,'patch') will colour code sessions by coloured
-% patches rather than vertical lines
-%
-% Mark Humphries
-
 axes(axes_handle);  % make sure current axis is focus
 blnPatch = 0;
 
-if nargin >= 6 && strcmp(varargin{1},'patch')
-    blnPatch = 1;
+if nargin >= 6 && strcmp(varargin{1},'
+
 end
 
 %% define ranges to plot things in

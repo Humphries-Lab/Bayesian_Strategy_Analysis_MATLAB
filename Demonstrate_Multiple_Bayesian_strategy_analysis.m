@@ -1,12 +1,13 @@
-% starter script to demonstrate Bayesian strategy analysis 
-% - analyses one strategy (go left)
+% script to demonstrate Bayesian strategy analysis of multiple strategies
+% - specify strategues in string array
 % - using data from one example rat from Peyrache Y-maze data-set
-% 
-% Mark Humphries 31/3/2022
+% Initial version 3/4/2022
+% Mark Humphries 
 
 clearvars; close all;
 
 addpath Strategy_models/        % must add this path to access strategy models
+addpath Functions/              % must add this path to access functions that implement analysis
 
 load Processed_data/PeyracheDataTables.mat   % a struct PeyracheData containing 4 Tables as fields, one per rat
 testData = PeyracheData.Rat_1;
@@ -52,22 +53,10 @@ for index_trial = 1:number_of_trials
         trial_type = evaluate_strategy(strategies(index_strategy),testData(1:index_trial,:));
 
         % update its alpha, beta  
-        % [Output.(charStrategy).alpha(index_trial),Output.(charStrategy).beta(index_trial),Output.(charStrategy).success_total,Output.(charStrategy).failure_total] = ...
- %               update_strategy_posterior_probability(trial_type,decay_rate,Output.(charStrategy).success_total,Output.(charStrategy).failure_total,alpha0,beta0);
+        [Output.(charStrategy).alpha(index_trial),Output.(charStrategy).beta(index_trial),Output.(charStrategy).success_total,Output.(charStrategy).failure_total] = ...
+               update_strategy_posterior_probability(trial_type,decay_rate,Output.(charStrategy).success_total,Output.(charStrategy).failure_total,alpha0,beta0);
         
-         % update its alpha, beta, with decay of null trials  
-%         [Output.(charStrategy).alpha(index_trial),Output.(charStrategy).beta(index_trial),Output.(charStrategy).success_total,Output.(charStrategy).failure_total] = ...
-%                 update_strategy_posterior_probability(trial_type,decay_rate,Output.(charStrategy).success_total,Output.(charStrategy).failure_total,alpha0,beta0,'DecayNull');
-        
-        if index_trial == 1
-             [Output.(charStrategy).alpha(index_trial),Output.(charStrategy).beta(index_trial)] = ...
-                old_update_strategy_posterior_probability(trial_type,decay_rate,alpha0,beta0);
-       
-        else
-            [Output.(charStrategy).alpha(index_trial),Output.(charStrategy).beta(index_trial)] = ...
-                old_update_strategy_posterior_probability(trial_type,decay_rate,Output.(charStrategy).alpha(index_trial-1),Output.(charStrategy).beta(index_trial-1));
-        end
-            
+        % compute current MAP probability and precision    
         Output.(charStrategy).MAPprobability(index_trial) = Summaries_of_Beta_distribution(Output.(charStrategy).alpha(index_trial),Output.(charStrategy).beta(index_trial),'MAP');
         Output.(charStrategy).precision(index_trial) = Summaries_of_Beta_distribution(Output.(charStrategy).alpha(index_trial),Output.(charStrategy).beta(index_trial),'Precision');
     end  
