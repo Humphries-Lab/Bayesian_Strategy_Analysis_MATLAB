@@ -2,9 +2,7 @@
 % - specify strategues in string array
 % - using data from one example rat from Peyrache Y-maze data-set
 %
-% Stores results in dynamically-created struct; users may want to recast as
-% Tables to save data
-%
+% Stores results in dynamic struct,
 % Initial version 3/4/2022
 % Mark Humphries 
 

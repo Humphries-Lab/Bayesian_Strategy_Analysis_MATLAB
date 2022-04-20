@@ -1,5 +1,4 @@
-% starter script to demonstrate Bayesian strategy analysis 
-% - analyses one strategy (go left)
+% Compare original decay and relax-to-prior decay rules
 % - using data from one example rat from Peyrache Y-maze data-set
 % 
 % Mark Humphries 31/3/2022
