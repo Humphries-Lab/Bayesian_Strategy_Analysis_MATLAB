@@ -1,6 +1,5 @@
 % compare effects of decaying or not decaying (alpha,beta) on Null trials
-% when updating using relax-to-prior
-% Peyrache Rat2 at the moment
+% Peyrache Rat1 at the moment
 % Mark Humphries
 
 clearvars; close all;
@@ -87,8 +86,8 @@ sequence_of_rules = [testData.TargetRule(1); testData.TargetRule(rule_change_tri
 figure('Units', 'centimeters', 'PaperPositionMode', 'auto','Position',[10 15 20 9]);
 plotSessionStructure(gca,number_of_trials,new_session_trials,rule_change_trials,sequence_of_rules); hold on
 line([1,number_of_trials],[0.5 0.5],'Color',[0.7 0.7 0.7]) % chance
-plot(OutputDecay.go_left.MAPprobability,'o','Color',[0.5 0.5 0.5]);
 plot(Output.go_left.MAPprobability);
+plot(OutputDecay.go_left.MAPprobability,'Color',[0.5 0.5 0.5]);
 
 % plot(Output.go_cued.MAPprobability,'Color',[0.8 0.6 0.5]);
 % plot(Output.go_right.MAPprobability,'Color',[0.4 0.8 0.5]); 
@@ -98,35 +97,26 @@ xlabel('Trials'); ylabel('P(strategy)')
 figure('Units', 'centimeters', 'PaperPositionMode', 'auto','Position',[10 15 20 9]);
 plotSessionStructure(gca,number_of_trials,new_session_trials,rule_change_trials,sequence_of_rules); hold on
 % line([1,number_of_trials],[0.5 0.5],'Color',[0.7 0.7 0.7]) % chance
+plot(Output.win_stay_cued.MAPprobability,'Color',[0.7 0.4 0.7]);
 plot(OutputDecay.win_stay_cued.MAPprobability,'Color',[0.5 0.5 0.5]);
-plot(Output.win_stay_cued.MAPprobability,'o','Color',[0.7 0.4 0.7]);
 title('Win-stay-cued');
 xlabel('Trials'); ylabel('P(strategy)')
 
 figure('Units', 'centimeters', 'PaperPositionMode', 'auto','Position',[10 15 20 9]);
 plotSessionStructure(gca,number_of_trials,new_session_trials,rule_change_trials,sequence_of_rules); hold on
 % line([1,number_of_trials],[0.5 0.5],'Color',[0.7 0.7 0.7]) % chance
+plot(Output.lose_shift_cued.MAPprobability,'Color',[0.7 0.4 0.7]);
 plot(OutputDecay.lose_shift_cued.MAPprobability,'Color',[0.5 0.5 0.5]);
-plot(Output.lose_shift_cued.MAPprobability,'o','Color',[0.7 0.4 0.7]);
 title('Lose-shift-cued');
 xlabel('Trials'); ylabel('P(strategy)')
 
-% odd behaviour: when including null-trial decay, lose-shift-cued has
-% increasing MAP when not being used?
-figure('Units', 'centimeters', 'PaperPositionMode', 'auto','Position',[10 15 20 9]);
-plotSessionStructure(gca,number_of_trials,new_session_trials,rule_change_trials,sequence_of_rules); hold on
-% line([1,number_of_trials],[0.5 0.5],'Color',[0.7 0.7 0.7]) % chance
-plot(OutputDecay.lose_shift_cued.alpha,'Color',[0.8 0.3 0.2]);
-plot(OutputDecay.lose_shift_cued.beta,'Color',[0.6 0.6 0.6]);
-title('Lose-shift-cued: alpha and beta');
-xlabel('Trials'); ylabel('parameter values')
-
+%
 
 figure('Units', 'centimeters', 'PaperPositionMode', 'auto','Position',[10 15 20 9]);
 plotSessionStructure(gca,number_of_trials,new_session_trials,rule_change_trials,sequence_of_rules); hold on
 % line([1,number_of_trials],[0.5 0.5],'Color',[0.7 0.7 0.7]) % chance
+plot(Output.lose_shift_spatial.MAPprobability,'Color',[0.7 0.4 0.7]);
 plot(OutputDecay.lose_shift_spatial.MAPprobability,'Color',[0.5 0.5 0.5]);
-plot(Output.lose_shift_spatial.MAPprobability,'o','Color',[0.7 0.4 0.7]);
 title('Lose-shift-spatial');
 xlabel('Trials'); ylabel('P(strategy)')
 
