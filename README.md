@@ -1,6 +1,9 @@
 # Bayesian_Strategy_Analysis_MATLAB
 MATLAB toolbox for Bayesian analysis of behavioural strategies on choice tasks
 
+Tested with: MATLAB R2017a onwards
+Requires: Statistics and Machine Learning Toolbox
+
 [reference to pre-print to go here]
 
 ## Top-level scripts
