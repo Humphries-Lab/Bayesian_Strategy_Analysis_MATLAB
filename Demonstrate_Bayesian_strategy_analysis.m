@@ -19,9 +19,6 @@ prior_type = "Uniform";
 %% set decay rate: gamma parameter
 decay_rate = 0.9;
 
-%% initialise storage
-Output.go_left = table;
-
 %% define priors
 [alpha0,beta0] = set_Beta_prior(prior_type);
 
