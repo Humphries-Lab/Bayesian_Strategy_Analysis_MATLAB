@@ -3,7 +3,7 @@ function [alpha_per_trial,beta_per_trial,MAP_per_trial,precision_per_trial] = in
 % INTERPOLATE_NULL_TRIALS replaces NaN trials with last evidence update
 % [ALPHA_PER_TRIAL,BETA_PER_TRIAL,MAP_PER_TRIAL,PRECISION_PER_TRIAL] = 
 %       INTERPOLATE_NULL_TRIALS(ALPHA_TIMESERIES,BETA_TIMESERIES,ALPHA_ZERO,BETA_ZERO)
-% give:
+% given:
 %   ALPHA_TIMESERIES: N-element vector, the time-series of the alpha parameter per 
 %   trial that contains NaNs for Null trials (i.e. those where the 
 %   strategy's probability could not be updated)

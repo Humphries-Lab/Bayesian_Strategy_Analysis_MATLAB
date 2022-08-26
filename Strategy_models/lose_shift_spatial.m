@@ -17,7 +17,7 @@ if number_trials > 1 && trial_data.Reward(end-1) == "no"
         % chose different spatial option, so is a success
         trial_type = "success";
     else
-        % got reward but chose a different option
+        % did not got reward but chose to stay
         trial_type = "failure"; 
     end
 end
