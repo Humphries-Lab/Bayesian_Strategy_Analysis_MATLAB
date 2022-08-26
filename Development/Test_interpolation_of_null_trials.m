@@ -3,8 +3,6 @@
 
 clearvars; close all;
 
-clearvars; close all;
-
 addpath ../Strategy_models/        % must add this path to access strategy models
 addpath ../Functions/
 
