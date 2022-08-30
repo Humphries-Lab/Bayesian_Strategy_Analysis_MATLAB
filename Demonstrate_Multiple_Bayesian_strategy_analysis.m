@@ -13,8 +13,9 @@ clearvars; close all;
 addpath Strategy_models/        % must add this path to access strategy models
 addpath Functions/              % must add this path to access functions that implement analysis
 
-load Processed_data/PeyracheDataTables.mat   % a struct PeyracheData containing 4 Tables as fields, one per rat
-testData = PeyracheData.Rat_2;
+% load data into a Table - strategy models will use variable names stored with Table to
+% access each column's data
+testData = readtable('Processed_data\Peyrache_Rat2_data.csv','TextType','string');
 
 %% choose strategies to evaluate
 % list of function names in Strategy_models/ folder - runs all of them to
