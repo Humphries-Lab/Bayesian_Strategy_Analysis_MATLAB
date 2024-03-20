@@ -7,6 +7,8 @@ Tested with: MATLAB R2017a onwards
 
 Requires: Statistics and Machine Learning Toolbox
 
+(A Python port is available at https://github.com/Humphries-Lab/Bayesian_Strategy_Analysis_Python)
+
 ## Top-level scripts
 Four scripts demonstrate the main use of the Toolbox:
 1. Demonstrate_Bayesian_strategy_analysis.m: shows how to run the algorithm for a single strategy model  
