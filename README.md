@@ -1,7 +1,8 @@
-# Bayesian_Strategy_Analysis_MATLAB
-MATLAB toolbox for Bayesian analysis of behavioural strategies on choice tasks
+# StrategyTracker (MATLAB)
 
-Read the paper at eLife: https://doi.org/10.7554/eLife.86491
+MATLAB toolbox for Bayesian tracking of behavioural strategies across trials on choice tasks
+
+Read the Strategy Tracker paper at eLife: https://doi.org/10.7554/eLife.86491
 
 Tested with: MATLAB R2017a onwards
 
